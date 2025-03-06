@@ -64,11 +64,14 @@ export const verifyOTP = async (req, res, next) => {
 
         const default_userId = "67c3077613a7e7f99a97ef3a";
     
-        res.cookie("user_id", default_userId, {
-            httpOnly: true,  // Secure, prevents client-side JS access
-            secure: NODE_ENV === "production", // Use HTTPS in production
-            sameSite: "strict", // Protect against CSRF attacks
-        });
+        if (!req.cookies.user_id) {
+            res.cookie("user_id", default_userId, {
+                httpOnly: true, // Secure, prevents client-side JS access
+                secure: NODE_ENV === "production", // Use HTTPS in production
+                sameSite: "Strict", // Protect against CSRF attacks
+                maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie valid for 7 days
+            });
+        }
     
         res.status(200).send( {message: "OTP verified successfully", data: {user_id: user.user_id}})
     } catch (error) {
