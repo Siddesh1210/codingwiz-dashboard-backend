@@ -62,7 +62,7 @@ export const verifyOTP = async (req, res, next) => {
         user.otp = undefined;
         await user.save();
 
-        const default_userId = "67c3077613a7e7f99a97ef3a";
+        const default_userId = user.user_id || "67c3077613a7e7f99a97ef3a";
     
         if (!req.cookies.user_id) {
             res.cookie("user_id", default_userId, {
