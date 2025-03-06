@@ -2,25 +2,30 @@ import orderModel from "../models/orderModel.js";
 import Transaction from "../models/transactionModel.js";
 import mongoose from "mongoose";
 
-export const uniqueUsers = async (req, res) => {
+export const uniqueUsers = async (req, res, next) => {
     try {
+        const user_id = req.user_id; // Extract user_id from request
         let { page, limit, from_wallet_address } = req.query;
+    
         // Convert page and limit to numbers (default to page=1 and limit=10)
         page = parseInt(page) || 1;
         limit = parseInt(limit) || 10;
         const skip = (page - 1) * limit;
-
+    
         // Aggregation pipeline
-        const pipeline = [];
-
-        // Optional filtering by from_wallet_address (customer_id)
+        const pipeline = [
+            // Step 1: Filter transactions by user_id
+            { $match: { user_id: new mongoose.Types.ObjectId(user_id) } }
+        ];
+    
+        // Step 2: Optional filtering by from_wallet_address (customer_id)
         if (from_wallet_address) {
             pipeline.push({
                 $match: { customer_id: new mongoose.Types.ObjectId(from_wallet_address) }
             });
         }
-
-        // Sorting by createdAt for first and last transaction
+    
+        // Step 3: Group transactions by customer_id
         pipeline.push(
             { $sort: { createdAt: 1 } },
             {
@@ -40,12 +45,12 @@ export const uniqueUsers = async (req, res) => {
                 }
             }
         );
-
+    
         const stats = await Transaction.aggregate(pipeline);
-
+    
         const total = stats[0].metadata[0]?.total || 0;
         const transactions = stats[0].data;
-
+    
         res.status(200).send({
             message: "Transaction stats fetched successfully",
             totalRecords: total,
@@ -54,10 +59,11 @@ export const uniqueUsers = async (req, res) => {
             perPage: limit,
             data: transactions
         });
-
+    
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        next(error.message)
     }
+    
 };
 
 export const recentTransaction = async (req, res, next) => {
