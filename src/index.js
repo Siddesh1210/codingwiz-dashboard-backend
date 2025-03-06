@@ -15,7 +15,7 @@ import dashboardRouter from './routes/dashboardRouter.js';
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:5173", "https://codingwiz-dashboard-by-siddesh-jaiswal.vercel.app/"];
+const allowedOrigins = ["http://localhost:5173", "https://codingwiz-dashboard-by-siddesh-jaiswal.vercel.app"];
 //Handling Cors Issue
 app.use(cors({
     origin: allowedOrigins,
