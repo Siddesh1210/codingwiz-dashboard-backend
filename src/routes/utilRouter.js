@@ -1,6 +1,6 @@
 import express from 'express';
 import authUser from '../middlewares/authUser.js';
-import { login, resendOTP, verifyOTP, order, validateOrder, failedOrder } from '../controllers/utilController.js';
+import { login, resendOTP, verifyOTP, order, validateOrder, failedOrder, logout } from '../controllers/utilController.js';
 const router = express.Router();
 
 //Send OTP API on Login
@@ -20,5 +20,7 @@ router.post("/validate-order", authUser, validateOrder);
 
 //Failed Order API
 router.post("/failed-order", authUser, failedOrder);
+
+router.post("/logout", authUser, logout);
 
 export default router;

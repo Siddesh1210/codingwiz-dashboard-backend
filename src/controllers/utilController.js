@@ -154,3 +154,16 @@ export const failedOrder = async (req, res, next) => {
         next(error);;
     }
 }
+
+export const logout = async (req, res, next) => {
+    try {
+        res.clearCookie("user_id", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "None",
+        });
+        res.status(200).send({ message: "Logged out successfully" });
+    } catch (error) {
+        next(error.message);   
+    }
+}
