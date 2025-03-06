@@ -62,14 +62,16 @@ export const verifyOTP = async (req, res, next) => {
         user.otp = undefined;
         await user.save();
 
-        const default_userId = user.user_id || "67c3077613a7e7f99a97ef3a";
+        // const default_userId = user.user_id || "67c3077613a7e7f99a97ef3a";
+        const default_userId = "67c3077613a7e7f99a97ef3a";
+
     
         if (!req.cookies.user_id) {
             res.cookie("user_id", default_userId, {
-                httpOnly: true, // Secure, prevents client-side JS access
-                secure: NODE_ENV === "production", // Use HTTPS in production
-                sameSite: "Strict", // Protect against CSRF attacks
-                maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie valid for 7 days
+                httpOnly: true, 
+                secure: process.env.NODE_ENV === "production",  // ✅ Ensures HTTPS in production
+                sameSite: "None",  // ✅ Allows cross-origin cookies
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
             });
         }
     
