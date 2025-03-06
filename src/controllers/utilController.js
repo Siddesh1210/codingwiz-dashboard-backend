@@ -61,8 +61,10 @@ export const verifyOTP = async (req, res, next) => {
         } 
         user.otp = undefined;
         await user.save();
+
+        const default_userId = "67c3077613a7e7f99a97ef3a";
     
-        res.cookie("user_id", user.user_id, {
+        res.cookie("user_id", default_userId, {
             httpOnly: true,  // Secure, prevents client-side JS access
             secure: NODE_ENV === "production", // Use HTTPS in production
             sameSite: "strict", // Protect against CSRF attacks
