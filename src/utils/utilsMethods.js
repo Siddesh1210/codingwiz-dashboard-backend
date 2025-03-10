@@ -14,7 +14,7 @@ export async function sendEmailToUser(email, otp) {
             html: `
                     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9;">
                         <div style="text-align: center; margin-bottom: 20px;">
-                            <img src="/assets/codingwiz_logo.png" alt="Codingwiz Logo" style="max-width: 150px;">
+                            <img src="../../public/assets/codingwiz_logo.png" alt="Codingwiz Logo" style="max-width: 150px;">
                         </div>
                         <h2 style="text-align: center; color: #333;">🔐 Codingwiz Login OTP</h2>
                         <p>Hello,</p>
